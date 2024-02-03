@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import app_logic.py  # Assuming app_logic handles the logic for button presses
+import app_logic  # Assuming app_logic handles the logic for button presses
 
 class ShowerControlPanel:
     def __init__(self, root):
