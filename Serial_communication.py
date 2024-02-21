@@ -16,7 +16,7 @@ def send_serial_data(command):
         print(f"Error sending data: {e}")
     except NameError:
         print("Serial connection not established.")
-
+#pussy
 def read_serial_data():
     """Reads data from the serial device."""
     try:

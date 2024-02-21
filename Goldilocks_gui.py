@@ -9,7 +9,7 @@ class ShowerControlPanel:
         
         # Initial desired temperature
         self.desired_temperature = 98.6
-
+#pussy
         # GUI Setup
         self.setup_ui()
 
