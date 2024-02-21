@@ -22,7 +22,7 @@ def fetch_current_temperature():
         except (ValueError, IndexError):
             print("Error parsing temperature")
             return None
-
+#bitches aint shit but hoes and tricks
 
 # # Import the SerialCommunication class from Serial_communication.py
 # from Serial_communication import SerialCommunication
