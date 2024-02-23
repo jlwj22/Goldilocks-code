@@ -57,7 +57,7 @@
 import tkinter as tk
 from tkinter import ttk
 import app_logic  # Assuming app_logic handles the logic for button presses
-
+## Import the SerialCommunication class from Serial_communication.py
 class ShowerControlPanel:
     def __init__(self, root):
         self.root = root

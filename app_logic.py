@@ -35,3 +35,4 @@ def send_command_to_arduino(command):
     # It's a wrapper around SerialCommunication's write_to_serial method
     serial_comm.write_to_serial(command)
 # The rest of the code can now use the send_command_to_arduino function to send commands to the Arduino.
+# The SerialCommunication class is responsible for handling the serial communication with the Arduino, and the Tkinter GUI is set up to call the send_command_to_arduino function when the button is pressed. This approach separates the concerns of the GUI and the serial communication, making the code easier to understand and maintain. It also allows for easier testing and reuse of the SerialCommunication class in other parts of the codebase.

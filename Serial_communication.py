@@ -33,6 +33,7 @@ def read_serial_data():
 # # Import necessary libraries
 # import serial
 # import time
+# miwsomr
 
 # # Attempt to establish a serial connection
 # try:
