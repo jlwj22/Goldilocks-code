@@ -1,38 +1,49 @@
-# import Serial_communication
+# Import necessary libraries
+import time
+from Serial_communication import SerialCommunication
 
-# def set_desired_temperature(temperature):
-#     """Sends the desired temperature setting over serial."""
-#     command = f"TEMP {temperature}"
-#     Serial_communication.send_serial_data(command)
+# Assuming SerialCommunication is correctly set up for serial communication
+serial_comm = SerialCommunication()
 
-# def set_water_pressure(pressure):
-#     """Sends the water pressure setting over serial."""
-#     command = f"PRESSURE {pressure.upper()}"
-#     Serial_communication.send_serial_data(command)
+def set_desired_temperature(temperature):
+    """Sends the desired temperature setting over serial."""
+    command = f"TEMP {temperature}"
+    serial_comm.write_to_serial(command)
+
+def set_water_pressure(pressure):
+    """Sends the water pressure setting over serial."""
+    command = f"PRESSURE {pressure.upper()}"
+    serial_comm.write_to_serial(command)
+
+def start_shower():
+    """Initiates the shower and prints 'shower start'."""
+    print("Shower start")
+    # Assuming there's a specific command to start the shower, if necessary
+    # serial_comm.write_to_serial("START SHOWER")
+    # Start the timer
+    global start_time
+    start_time = time.time()
+
+def get_shower_duration():
+    """Calculates and returns the shower's running time in seconds."""
+    if 'start_time' in globals():
+        return time.time() - start_time
+    else:
+        print("Shower has not started yet.")
+        return 0
 
 def fetch_current_temperature():
-    """Requests the current temperature from the device."""
-    Serial_communication.send_serial_data("GET TEMP")
-    temp = Serial_communication.read_serial_data()
+    """Requests the current temperature from the device and handles the response."""
+    serial_comm.write_to_serial("GET TEMP")
+    temp = serial_comm.read_serial_data()
     if temp:
         try:
-            # Assuming the temperature comes back in a format that needs parsing
-            temperature = float(temp.split(':')[1].strip('°F'))
+            # Assuming the temperature comes back in a format "TEMP:x°C"
+            temperature = float(temp.split(':')[1].strip('°C'))
             return temperature
         except (ValueError, IndexError):
             print("Error parsing temperature")
             return None
-
-
-# Import the SerialCommunication class from Serial_communication.py
-from Serial_communication import SerialCommunication
-
-# Create an instance of the SerialCommunication class
-serial_comm = SerialCommunication()
-
-def send_command_to_arduino(command):
-    # This function sends a command to the Arduino
-    # It's a wrapper around SerialCommunication's write_to_serial method
-    serial_comm.write_to_serial(command)
-# The rest of the code can now use the send_command_to_arduino function to send commands to the Arduino.
-# The SerialCommunication class is responsible for handling the serial communication with the Arduino, and the Tkinter GUI is set up to call the send_command_to_arduino function when the button is pressed. This approach separates the concerns of the GUI and the serial communication, making the code easier to understand and maintain. It also allows for easier testing and reuse of the SerialCommunication class in other parts of the codebase.
+    else:
+        print("No temperature data received.")
+        return None
