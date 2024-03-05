@@ -3,7 +3,7 @@ from tkinter import ttk
 import time
 
 # Assuming app_logic handles the logic for button presses
-import app_logic
+from app_logic import set_desired_temperature, set_water_pressure, start_shower, get_shower_duration, fetch_current_temperature
 
 class ShowerControlPanel:
     def __init__(self, root):
@@ -50,17 +50,22 @@ class ShowerControlPanel:
 
     def toggle_pressure(self):
         self.pressure_high = not self.pressure_high
-        pressure_text = "High" if self.pressure_high else "Low"
-        print(self.pressure_high)
+        pressure_text = "HIGH" if self.pressure_high else "LOW"
+        if self.pressure_high:
+            print("PRESSURE HIGH")
+        else:
+            print("PRESSURE LOW")
         self.pressure_button.config(text=f"Pressure: {pressure_text}")
-        app_logic.set_water_pressure(pressure_text)
+        set_water_pressure(pressure_text)
 
     def start_shower(self):
+        print("START SHOWER")
         self.start_time = time.time()
         self.timer_running = True
         self.update_timer()
 
     def stop_shower(self):
+        print("STOP SHOWER")
         self.timer_running = False
 
     def update_timer(self):
@@ -81,6 +86,13 @@ class ShowerControlPanel:
 
     def update_desired_temp_label(self):
         self.desired_temp_label.config(text=f"Desired Temp: {self.desired_temperature}°F")
+    
+    def update_current_temperature(self):
+        temperature = fetch_current_temperature()
+        if temperature is not None:
+            self.desired_temperature = temperature
+            self.update_desired_temp_label()
+        self.current_temp_label.config(text=f"Current Temp: {temperature}°F")
 
 def run_app():
     root = tk.Tk()
