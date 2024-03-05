@@ -14,7 +14,24 @@ def set_water_pressure(pressure):
     """Sends the water pressure setting over serial."""
     command = f"PRESSURE {pressure.upper()}"
     serial_comm.write_to_serial(command)
-
+    
+def fetch_current_temperature():
+    serial_comm.write_to_serial("GET TEMP")
+    temp = serial_comm.read_serial_data()
+    if temp:
+        try:
+            celcius = float(temp.split(':')[1].strip('°C'))
+            
+            fahrenheit = (celcius * 9/5) + 32
+            return fahrenheit
+        
+        except ValueError:
+            print("Error parsing temperature data.")
+            return None
+    else:
+        print("No temperature data received.")
+        return None
+    
 def start_shower():
     """Initiates the shower and prints 'shower start'."""
     print("Shower start")
@@ -30,20 +47,4 @@ def get_shower_duration():
         return time.time() - start_time
     else:
         print("Shower has not started yet.")
-        return 0
-
-def fetch_current_temperature():
-    """Requests the current temperature from the device and handles the response."""
-    serial_comm.write_to_serial("GET TEMP")
-    temp = serial_comm.read_serial_data()
-    if temp:
-        try:
-            # Assuming the temperature comes back in a format "TEMP:x°C"
-            temperature = float(temp.split(':')[1].strip('°C'))
-            return temperature
-        except (ValueError, IndexError):
-            print("Error parsing temperature")
-            return None
-    else:
-        print("No temperature data received.")
-        return None
+        return 0 

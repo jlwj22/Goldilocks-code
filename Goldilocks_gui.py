@@ -63,6 +63,8 @@ class ShowerControlPanel:
         self.start_time = time.time()
         self.timer_running = True
         self.update_timer()
+        self.start_temp_updates()  # Start temperature updates
+
 
     def stop_shower(self):
         print("STOP SHOWER")
@@ -92,7 +94,21 @@ class ShowerControlPanel:
         if temperature is not None:
             self.desired_temperature = temperature
             self.update_desired_temp_label()
-        self.current_temp_label.config(text=f"Current Temp: {temperature}°F")
+        self.current_temp_label.config(text=f"Current Temp: {temperature}°F") 
+    
+    def update_current_temp_label(self):  
+        """Fetches the current temperature and updates the label."""
+        temp_fahrenheit = fetch_current_temperature() 
+        if temp_fahrenheit is not None:
+            self.current_temp_label.config(text=f"Current Temp: {temp_fahrenheit}°F")
+        else:
+            self.current_temp_label.config(text="Current Temp: Error reading temperature")
+
+    def start_temp_updates(self):
+        """Starts periodic updates of the temperature label."""
+        self.update_current_temp_label()  # Get the initial temperature
+        self.root.after(1000, self.start_temp_updates)  # Update every second
+
 
 def run_app():
     root = tk.Tk()
